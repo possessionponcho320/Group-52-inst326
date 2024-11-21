@@ -212,7 +212,7 @@ if __name__ == "__main__":
                         
                 elif user_options == "4":
                     week = input("What week do you want to calculate? ")
-                    print(f"You are making ${user.get_weekly_pay(week - 1)} on week {week}")
+                    print(f"You are making ${user.get_weekly_pay(week)} on week {week}")
                 else:
                     program = 1
                     
