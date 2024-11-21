@@ -1,7 +1,16 @@
+# Solution - enter your code solution below
 import calendar
 
 # Availability options
 AVAILABILITY_OPTIONS = ["preferred", "available", "unavailable"]
+
+class Caregiver:
+    def __init__(self, name, phone, email, pay_rate, hours):
+        self.name = name
+        self.phone = phone
+        self.email = email
+        self.pay_rate = pay_rate
+        self.hours = hours
 
 
 class CaregiverSchedule:
@@ -112,13 +121,26 @@ class CaregiverSchedule:
         
 if __name__ == "__main__":
     while True:
-        names = ["Emily Martins", "Emma Martinez", 
-             "Abigail Garcia", "Isabella Lopez", "James Rodriguez", 
-             "Benjamin Martinez", "Aiden Martins", "Emma Smith",
-             "Benjamin Thomas", "Jackson Taylor"] 
+        caregivers = [
+                    Caregiver("Emily Martins", "123-456-7890", "emily@gmail.com", 0, 0),
+                    Caregiver("Emma Martinez", "234-567-8901", "emma@gmail.com", 0, 0),
+                    Caregiver("Abigail Garcia", "345-678-9012", "abigail@gmail.com", 0, 0),
+                    Caregiver("Isabella Lopez", "456-789-0123", "isabella@gmail.com", 0, 0),
+                    Caregiver("James Rodriguez", "567-890-1234", "james@gmail.com", 0, 0),
+                    Caregiver("Benjamin Martinez", "678-901-2345", "benjamin@gmail.com", 0, 0),
+                    Caregiver("Aiden Martins", "789-012-3456", "aiden@gmail.com", 0, 0),
+                    Caregiver("Emma Smith", "890-123-4567", "emma.smith@gmail.com", 0, 0),
+                    ]
     
         user = input("What is Your Name: ")
-        if user in names:
+        
+        index = 8  # Initialize index to track the caregiver
+        for i in range(len(caregivers)):
+            if user == caregivers[i].name:
+                user = caregivers[i].name
+                index = i
+                break
+        if index != 8:
             print("Welcome to the Care Availability Scheduler")
         
             # Get user input for the year and month
@@ -136,5 +158,7 @@ if __name__ == "__main__":
             continue
         else:
             break
- #TEST           
+        else:
+            break
+ 
     
