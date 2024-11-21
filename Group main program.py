@@ -140,7 +140,7 @@ if __name__ == "__main__":
                 user = caregivers[i].name
                 index = i
                 break
-        if index is None:
+        if index is not None:
             print("Welcome to the Care Availability Scheduler")
         
             # Get user input for the year and month
