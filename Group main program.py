@@ -134,13 +134,13 @@ if __name__ == "__main__":
     
         user = input("What is Your Name: ")
         
-        index = 8  # Initialize index to track the caregiver
+        index = None  # Initialize index to track the caregiver
         for i in range(len(caregivers)):
             if user == caregivers[i].name:
                 user = caregivers[i].name
                 index = i
                 break
-        if index != 8:
+        if index is None:
             print("Welcome to the Care Availability Scheduler")
         
             # Get user input for the year and month
