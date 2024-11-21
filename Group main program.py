@@ -1,4 +1,3 @@
-# Solution - enter your code solution below
 import calendar
 
 # Availability options
@@ -12,7 +11,35 @@ class Caregiver:
         self.pay_rate = pay_rate
         self.hours = hours
         self.is_paid = is_paid
+        self.weekly_hours = []
         
+        # Update pay_rate if is_paid is True
+        if self.is_paid:
+            self.pay_rate = 20
+        
+    # Getter for pay_rate
+    def get_pay_rate(self):
+        return self.pay_rate
+   
+    # Setter for pay_rate
+    def set_pay_rate(self, value):
+        self.pay_rate += value
+        
+    # Getter for hours
+    def get_hours(self):
+        return self.hours
+    
+    # Setter for hours
+    def set_hours(self, value):
+        self.hours += value
+    
+    
+    # calculates weekly pay
+    def get_weekly_pay(self, week):
+        return self.weekly_hours[week - 1] * self.pay_rate
+        
+    
+   
 
 
 class CaregiverSchedule:
@@ -36,20 +63,40 @@ class CaregiverSchedule:
 
     # Function to update the schedule based on user input
     def update_schedule(self, user):
-        day_names = list(calendar.day_name)  # ['Monday', 'Tuesday', ...]
+        num_days = calendar.monthrange(self.year, self.month)[1]
+        weekly_total = 0
 
-        for day in range(1, 8):
-            print(f"\nAvailability for {day_names[day - 1]}")
+        for day in range(1, num_days + 1):
+            day_name = calendar.day_name[calendar.weekday(self.year, self.month, day)]
+            print(f"\nAvailability for {day_name}, {self.month}/{day}/{self.year}:")
             
             # Get availability for the morning shift
             morning_shift = input("Morning shift (7:00AM - 1:00PM): Enter 'preferred', 'available', or 'unavailable' (default is 'available'): ").strip().lower()
             if morning_shift in AVAILABILITY_OPTIONS:
                 self.schedule[day]["7:00AM - 1:00PM"] = morning_shift
             
+            if morning_shift == "available" or morning_shift == "":
+                user.set_hours(6)
+                weekly_total += 6
+                
+            
             # Get availability for the afternoon shift
             afternoon_shift = input("Afternoon shift (1:00PM - 7:00PM): Enter 'preferred', 'available', or 'unavailable' (default is 'available'): ").strip().lower()
             if afternoon_shift in AVAILABILITY_OPTIONS:
                 self.schedule[day]["1:00PM - 7:00PM"] = afternoon_shift
+            
+            if afternoon_shift == "available" or afternoon_shift == "":
+                user.set_hours(6)
+                weekly_total += 6
+           
+            if day_name == "Sunday":
+                user.weekly_hours.append(weekly_total)
+                weekly_total = 0  
+       
+        # Append remaining weekly total if the month ends mid-week
+        if weekly_total > 0:
+            user.weekly_hours.append(weekly_total)
+            
    
     # Function to display the schedule as an HTML calendar
     def display_care_schedule_as_html(self):
@@ -144,14 +191,32 @@ if __name__ == "__main__":
                 break
         if index is not None:
             print("Welcome to the Care Availability Scheduler")
-        
-            # Get user input for the year and month
-            year = int(input("Enter the year: "))
-            month = int(input("Enter the month (1-12): "))
-            schedule = CaregiverSchedule(user.name, year, month)
-            schedule.generate_month_schedule()
-            schedule.update_schedule()
-            schedule.display_care_schedule_as_html()
+            program = 0
+            while program != 1:
+                user_options = input("What do you want to do? Press 1 to update or create a schedule. Press 2 to get your hours. Press 3 to get your pay rate. Press 4 to calculate weekly pay. Press any other to exit")
+                if user_options == "1":
+                    # Get user input for the year and month
+                    year = int(input("Enter the year: "))
+                    month = int(input("Enter the month (1-12): "))
+                    schedule = CaregiverSchedule(user.name, year, month)
+                    schedule.generate_month_schedule()
+                    schedule.update_schedule(user)
+                    schedule.display_care_schedule_as_html()
+            
+                elif user_options == "2":
+                    print(f"You are working {user.hours} hours.")
+                
+                
+                elif user_options == "3":
+                     print(f"You are making ${user.pay_rate} an hour.")
+                        
+                elif user_options == "4":
+                    week = input("What week do you want to calculate? ")
+                    print(f"You are making ${user.get_weekly_pay(1)} on week {week}")
+                else:
+                    program = 1
+                    
+                
         else:
             print("You are not a member of the care team!")
             
@@ -161,5 +226,3 @@ if __name__ == "__main__":
         else:
             break
             
- 
-    
