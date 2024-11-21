@@ -1,4 +1,4 @@
-import calendar
+iimport calendar
 
 # Availability options
 AVAILABILITY_OPTIONS = ["preferred", "available", "unavailable"]
@@ -169,8 +169,8 @@ class CaregiverSchedule:
         print(f"HTML care schedule for {calendar.month_name[self.month]} {self.year} generated successfully!")
         
 if __name__ == "__main__":
-    while True:
-        caregivers = [
+    
+    caregivers = [
                     Caregiver("Emily Martins", "123-456-7890", "emily@gmail.com", 0, 0, True),
                     Caregiver("Emma Martinez", "234-567-8901", "emma@gmail.com", 0, 0, True),
                     Caregiver("Abigail Garcia", "345-678-9012", "abigail@gmail.com", 0, 0, True),
@@ -181,6 +181,7 @@ if __name__ == "__main__":
                     Caregiver("Emma Smith", "890-123-4567", "emma.smith@gmail.com", 0, 0, False),
                     ]
     
+    while True:
         user = input("What is Your Name: ")
         
         index = None  # Initialize index to track the caregiver
@@ -226,3 +227,4 @@ if __name__ == "__main__":
         else:
             break
             
+    
