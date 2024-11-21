@@ -5,12 +5,14 @@ import calendar
 AVAILABILITY_OPTIONS = ["preferred", "available", "unavailable"]
 
 class Caregiver:
-    def __init__(self, name, phone, email, pay_rate, hours):
+    def __init__(self, name, phone, email, pay_rate, hours, is_paid):
         self.name = name
         self.phone = phone
         self.email = email
         self.pay_rate = pay_rate
         self.hours = hours
+        self.is_paid = is_paid
+        
 
 
 class CaregiverSchedule:
@@ -33,7 +35,7 @@ class CaregiverSchedule:
             }
 
     # Function to update the schedule based on user input
-    def update_schedule(self):
+    def update_schedule(self, user):
         day_names = list(calendar.day_name)  # ['Monday', 'Tuesday', ...]
 
         for day in range(1, 8):
@@ -122,14 +124,14 @@ class CaregiverSchedule:
 if __name__ == "__main__":
     while True:
         caregivers = [
-                    Caregiver("Emily Martins", "123-456-7890", "emily@gmail.com", 0, 0),
-                    Caregiver("Emma Martinez", "234-567-8901", "emma@gmail.com", 0, 0),
-                    Caregiver("Abigail Garcia", "345-678-9012", "abigail@gmail.com", 0, 0),
-                    Caregiver("Isabella Lopez", "456-789-0123", "isabella@gmail.com", 0, 0),
-                    Caregiver("James Rodriguez", "567-890-1234", "james@gmail.com", 0, 0),
-                    Caregiver("Benjamin Martinez", "678-901-2345", "benjamin@gmail.com", 0, 0),
-                    Caregiver("Aiden Martins", "789-012-3456", "aiden@gmail.com", 0, 0),
-                    Caregiver("Emma Smith", "890-123-4567", "emma.smith@gmail.com", 0, 0),
+                    Caregiver("Emily Martins", "123-456-7890", "emily@gmail.com", 0, 0, True),
+                    Caregiver("Emma Martinez", "234-567-8901", "emma@gmail.com", 0, 0, True),
+                    Caregiver("Abigail Garcia", "345-678-9012", "abigail@gmail.com", 0, 0, True),
+                    Caregiver("Isabella Lopez", "456-789-0123", "isabella@gmail.com", 0, 0, True),
+                    Caregiver("James Rodriguez", "567-890-1234", "james@gmail.com", 0, 0, False),
+                    Caregiver("Benjamin Martinez", "678-901-2345", "benjamin@gmail.com", 0, 0, False),
+                    Caregiver("Aiden Martins", "789-012-3456", "aiden@gmail.com", 0, 0, False),
+                    Caregiver("Emma Smith", "890-123-4567", "emma.smith@gmail.com", 0, 0, False),
                     ]
     
         user = input("What is Your Name: ")
@@ -137,7 +139,7 @@ if __name__ == "__main__":
         index = None  # Initialize index to track the caregiver
         for i in range(len(caregivers)):
             if user == caregivers[i].name:
-                user = caregivers[i].name
+                user = caregivers[i]
                 index = i
                 break
         if index is not None:
@@ -146,7 +148,7 @@ if __name__ == "__main__":
             # Get user input for the year and month
             year = int(input("Enter the year: "))
             month = int(input("Enter the month (1-12): "))
-            schedule = CaregiverSchedule(user, year, month)
+            schedule = CaregiverSchedule(user.name, year, month)
             schedule.generate_month_schedule()
             schedule.update_schedule()
             schedule.display_care_schedule_as_html()
@@ -158,7 +160,6 @@ if __name__ == "__main__":
             continue
         else:
             break
-        else:
-            break
+            
  
     
