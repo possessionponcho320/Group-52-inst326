@@ -1,3 +1,5 @@
+import calendar
+
 # Availability options
 AVAILABILITY_OPTIONS = ["preferred", "available", "unavailable"]
 
@@ -6,30 +8,30 @@ class Caregiver:
         self.name = name
         self.phone = phone
         self.email = email
-        self.pay_rate = 0
-        self.hours = 0
-        self.is_paid = is_paid
+        self._pay_rate = 0
+        self._hours = 0
+        self._is_paid = is_paid
         self.weekly_hours = []
         
         # Update pay_rate if is_paid is True
-        if self.is_paid:
-            self.pay_rate = 20
+        if self._is_paid:
+            self._pay_rate = 20
         
     # Getter for pay_rate
     def get_pay_rate(self):
-        return self.pay_rate
+        return self._pay_rate
    
     # Setter for pay_rate
     def set_pay_rate(self, value):
-        self.pay_rate += value
+        self._pay_rate += value
         
     # Getter for hours
     def get_hours(self):
-        return self.hours
+        return self._hours
     
     # Setter for hours
     def set_hours(self, value):
-        self.hours += value
+        self._hours += value
     
     
     # calculates weekly pay
@@ -39,12 +41,12 @@ class Caregiver:
             return 0
         else:
             # Return the pay for the specified week
-            return self.weekly_hours[week - 1] * self.pay_rate
+            return self.weekly_hours[week - 1] * self._pay_rate
 
 
     # calculate monthly pay
     def get_monthly_pay(self):
-        return self.hours * self.pay_rate
+        return self._hours * self._pay_rate
    
 
 
@@ -211,11 +213,11 @@ if __name__ == "__main__":
                     schedule.display_care_schedule_as_html()
             
                 elif user_options == "2":
-                    print(f"You are working {user.hours} hours.")
+                    print(f"You are working {user.get_hours()} hours.")
                 
                 
                 elif user_options == "3":
-                     print(f"You are making ${user.pay_rate} an hour.")
+                     print(f"You are making ${user.get_pay_rate()} an hour.")
                         
                 elif user_options == "4":
                     week = int(input("What week do you want to calculate? "))
@@ -237,3 +239,4 @@ if __name__ == "__main__":
             print("Goodbye!")
             break
             
+    
