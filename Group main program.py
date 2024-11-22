@@ -128,6 +128,36 @@ class CaregiverSchedule:
 
         print(f"HTML care schedule for {calendar.month_name[self.month]} {self.year} generated successfully!")
         
+def generate_pay_report(caregivers, year, month):
+    """Generate a pay report for the caregivers."""
+    total_hours = 0
+    total_pay = 0
+    report = f"Pay Report for {calendar.month_name[month]} {year}\n\n"
+
+    for caregiver in caregivers:
+        # Create a schedule for the caregiver
+        schedule = CaregiverSchedule(caregiver, year, month)
+        schedule.generate_month_schedule()  # Generate the month's schedule
+
+        # Calculate the caregiver's weekly hours
+        weekly_hours = caregiver.calculate_weekly_hours(schedule.schedule)
+        weekly_pay = weekly_hours * caregiver.pay_rate
+
+        total_hours += weekly_hours
+        total_pay += weekly_pay
+
+        report += f"{caregiver.name} - Hours: {weekly_hours}, Weekly Pay: ${weekly_pay:.2f}\n"
+
+    report += f"\nTotal Hours for All Caregivers: {total_hours}\n"
+    report += f"Total Pay for All Caregivers: ${total_pay:.2f}"
+
+    # Save the pay report to a text file
+    with open(f"pay_report_{year}_{month}.txt", "w") as file:
+        file.write(report)
+
+    print(f"Pay report for {calendar.month_name[month]} {year} generated successfully!")
+
+        
 # List of caregivers
 caregivers = [
     Caregiver("Logan Kim", "353-383-2849", "logank@gmail.com", 20.00, 40),
