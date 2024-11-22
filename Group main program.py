@@ -1,3 +1,4 @@
+# Solution - enter your code solution below
 import calendar
 
 # Availability options
@@ -68,6 +69,8 @@ class CaregiverSchedule:
 
             # Get availability for the morning shift
             morning_shift = input("Morning shift (7:00AM - 1:00PM): Enter 'preferred', 'available', or 'unavailable' (default is 'available'): ").strip().lower()
+            if not morning_shift:  # Default to "available" if input is empty
+                morning_shift = "available"
             if morning_shift in AVAILABILITY_OPTIONS:
                 self.schedule[day]["7:00AM - 1:00PM"] = morning_shift
                 if morning_shift in ["available", "preferred"]:
@@ -76,6 +79,8 @@ class CaregiverSchedule:
             
             # Get availability for the afternoon shift
             afternoon_shift = input("Afternoon shift (1:00PM - 7:00PM): Enter 'preferred', 'available', or 'unavailable' (default is 'available'): ").strip().lower()
+            if not afternoon_shift:  # Default to "available" if input is empty
+                afternoon_shift = "available"
             if afternoon_shift in AVAILABILITY_OPTIONS:
                 self.schedule[day]["1:00PM - 7:00PM"] = afternoon_shift
                 if afternoon_shift in ["available", "preferred"]:
