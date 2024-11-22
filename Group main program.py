@@ -3,6 +3,7 @@ import calendar
 # Availability options
 AVAILABILITY_OPTIONS = ["preferred", "available", "unavailable"]
 
+Nina
 class Caregiver:
     def __init__(self, name, phone, email, pay_rate = 20.00, hours_per_week = 40):
         self.name = name
@@ -25,6 +26,12 @@ class Caregiver:
 class CaregiverSchedule:
     def __init__(self, name, year, month):
         self.caregiver = caregiver
+
+
+class CaregiverSchedule:
+    def __init__(self, name, year, month):
+        self.name = name
+main
         self.year = year
         self.month = month
         self.schedule = {}
@@ -128,6 +135,7 @@ class CaregiverSchedule:
 
         print(f"HTML care schedule for {calendar.month_name[self.month]} {self.year} generated successfully!")
         
+ Nina
 def generate_pay_report(caregivers, year, month):
     """Generate a pay report for the caregivers."""
     total_hours = 0
@@ -178,11 +186,27 @@ if __name__ == "__main__":
 
         if caregiver:
             print(f"Welcome to the Care Availability Scheduler, {caregiver.name}")
+
+if __name__ == "__main__":
+    while True:
+        names = ["Emily Martins", "Emma Martinez", 
+             "Abigail Garcia", "Isabella Lopez", "James Rodriguez", 
+             "Benjamin Martinez", "Aiden Martins", "Emma Smith",
+             "Benjamin Thomas", "Jackson Taylor"] 
+    
+        user = input("What is Your Name: ")
+        if user in names:
+            print("Welcome to the Care Availability Scheduler")
+ main
         
             # Get user input for the year and month
             year = int(input("Enter the year: "))
             month = int(input("Enter the month (1-12): "))
+ Nina
             schedule = CaregiverSchedule(caregiver, year, month)
+
+            schedule = CaregiverSchedule(user, year, month)
+ main
             schedule.generate_month_schedule()
             schedule.update_schedule()
             schedule.display_care_schedule_as_html()
