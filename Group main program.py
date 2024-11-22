@@ -343,6 +343,7 @@ if __name__ == "__main__":
             schedule.generate_month_schedule()
             schedule.update_schedule()
             schedule.display_care_schedule_as_html()
+            generate_pay_report(caregiver, year, month)
         else:
             print("You are not a member of the care team!")
             
