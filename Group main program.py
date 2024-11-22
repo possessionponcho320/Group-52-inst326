@@ -4,6 +4,7 @@ import calendar
 # Availability options
 AVAILABILITY_OPTIONS = ["preferred", "available", "unavailable"]
 
+
 class Caregiver:
     def __init__(self, name, phone, email, is_paid):
         self.name = name
@@ -40,6 +41,27 @@ class Caregiver:
     # Calculate monthly pay
     def get_monthly_pay(self):
         return self._hours * self._pay_rate
+
+
+
+class Caregiver:
+    def __init__(self, name, phone, email, pay_rate = 20.00, hours_per_week = 40):
+        self.name = name
+        self.phone = phone
+        self.email = email
+        self.pay_rate = pay_rate
+        self.hours_per_week = hours_per_week
+        self.availability = {}
+    
+    def set_availability(self, day, shifts):
+        """Set the caregiver's availability for a given day"""
+        self.availability[day] = shifts
+
+    def __str__(self):
+        return f"{self.name} ({self.phone}, {self.email})"
+    
+    def get_name(self):
+        return self.name
 
 
 class CaregiverSchedule:
@@ -157,6 +179,7 @@ class CaregiverSchedule:
         print(f"HTML care schedule for {calendar.month_name[self.month]} {self.year} generated successfully!")
 
 
+
 def generate_pay_report(caregivers, year, month):
     html_report = f"""
     <html>
@@ -254,6 +277,79 @@ if __name__ == "__main__":
                     break
                 else:
                     print("Invalid option. Try again.")
+
+        
+# Nina
+def generate_pay_report(caregivers, year, month):
+    """Generate a pay report for the caregivers."""
+    total_hours = 0
+    total_pay = 0
+    report = f"Pay Report for {calendar.month_name[month]} {year}\n\n"
+
+    for caregiver in caregivers:
+        # Create a schedule for the caregiver
+        schedule = CaregiverSchedule(caregiver, year, month)
+        schedule.generate_month_schedule()  # Generate the month's schedule
+
+        # Calculate the caregiver's weekly hours
+        weekly_hours = caregiver.calculate_weekly_hours(schedule.schedule)
+        weekly_pay = weekly_hours * caregiver.pay_rate
+
+        total_hours += weekly_hours
+        total_pay += weekly_pay
+
+        report += f"{caregiver.name} - Hours: {weekly_hours}, Weekly Pay: ${weekly_pay:.2f}\n"
+
+    report += f"\nTotal Hours for All Caregivers: {total_hours}\n"
+    report += f"Total Pay for All Caregivers: ${total_pay:.2f}"
+
+    # Save the pay report to a text file
+    with open(f"pay_report_{year}_{month}.txt", "w") as file:
+        file.write(report)
+
+    print(f"Pay report for {calendar.month_name[month]} {year} generated successfully!")
+
+        
+# List of caregivers
+caregivers = [
+    Caregiver("Logan Kim", "353-383-2849", "logank@gmail.com", 20.00, 40),
+    Caregiver("Samantha Green", "353-792-7943", "samag@gmail.com", 20.00, 30),
+    Caregiver("Tony Martin", "373-804-1264", "tonymar@gmail.com", 20.00, 38),
+    Caregiver("Tim Stephens", "373-294-02953", "timstp@gmail.com", 20.00, 40),
+    Caregiver("Jenny Dawnson", "364-305-1068", "jennydawnson@gmail.com", 20.00, 33),
+    Caregiver("Peter Zhang", "353-805-1852", "pdzhng@gmail.com", 20.00, 39),
+    Caregiver("David Lee", "364-703-2692", "ddgsan@gmail.com", 20.00, 40),
+    Caregiver("Jerrica Lopez", "284-903-9233", "jrricalpz@gmail.com", 20.00, 35)
+]
+
+if __name__ == "__main__":
+    while True:
+        user_name = input("What is Your Name: ").strip()
+
+        caregiver = next((c for c in caregivers if c.get_name() == user_name), None)
+
+        if caregiver:
+            print(f"Welcome to the Care Availability Scheduler, {caregiver.name}")
+ #main
+        
+            # Get user input for the year and month
+            year = int(input("Enter the year: "))
+            month = int(input("Enter the month (1-12): "))
+ #Nina
+            schedule = CaregiverSchedule(caregiver, year, month)
+
+            schedule = CaregiverSchedule(user, year, month)
+ #main
+            schedule.generate_month_schedule()
+            schedule.update_schedule()
+            schedule.display_care_schedule_as_html()
+        else:
+            print("You are not a member of the care team!")
+            
+        option = input("Do you want to reschedule or is there another user(yes/no): ")
+        if option == "yes":
+            continue
+
         else:
             print("You are not a member of the care team.")
         
