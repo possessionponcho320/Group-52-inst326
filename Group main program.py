@@ -25,13 +25,7 @@ class Caregiver:
 
 class CaregiverSchedule:
     def __init__(self, name, year, month):
-        self.caregiver = caregiver
-
-
-class CaregiverSchedule:
-    def __init__(self, name, year, month):
         self.name = name
-main
         self.year = year
         self.month = month
         self.schedule = {}
@@ -186,17 +180,6 @@ if __name__ == "__main__":
 
         if caregiver:
             print(f"Welcome to the Care Availability Scheduler, {caregiver.name}")
-
-if __name__ == "__main__":
-    while True:
-        names = ["Emily Martins", "Emma Martinez", 
-             "Abigail Garcia", "Isabella Lopez", "James Rodriguez", 
-             "Benjamin Martinez", "Aiden Martins", "Emma Smith",
-             "Benjamin Thomas", "Jackson Taylor"] 
-    
-        user = input("What is Your Name: ")
-        if user in names:
-            print("Welcome to the Care Availability Scheduler")
  main
         
             # Get user input for the year and month
