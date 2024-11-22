@@ -1,15 +1,13 @@
-iimport calendar
-
 # Availability options
 AVAILABILITY_OPTIONS = ["preferred", "available", "unavailable"]
 
 class Caregiver:
-    def __init__(self, name, phone, email, pay_rate, hours, is_paid):
+    def __init__(self, name, phone, email, is_paid):
         self.name = name
         self.phone = phone
         self.email = email
-        self.pay_rate = pay_rate
-        self.hours = hours
+        self.pay_rate = 0
+        self.hours = 0
         self.is_paid = is_paid
         self.weekly_hours = []
         
@@ -36,9 +34,17 @@ class Caregiver:
     
     # calculates weekly pay
     def get_weekly_pay(self, week):
-        return self.weekly_hours[week - 1] * self.pay_rate
-        
-    
+        # Ensure the week index is valid
+        if not self.weekly_hours or week < 1 or week > len(self.weekly_hours):
+            return 0
+        else:
+            # Return the pay for the specified week
+            return self.weekly_hours[week - 1] * self.pay_rate
+
+
+    # calculate monthly pay
+    def get_monthly_pay(self):
+        return self.hours * self.pay_rate
    
 
 
@@ -171,14 +177,14 @@ class CaregiverSchedule:
 if __name__ == "__main__":
     
     caregivers = [
-                    Caregiver("Emily Martins", "123-456-7890", "emily@gmail.com", 0, 0, True),
-                    Caregiver("Emma Martinez", "234-567-8901", "emma@gmail.com", 0, 0, True),
-                    Caregiver("Abigail Garcia", "345-678-9012", "abigail@gmail.com", 0, 0, True),
-                    Caregiver("Isabella Lopez", "456-789-0123", "isabella@gmail.com", 0, 0, True),
-                    Caregiver("James Rodriguez", "567-890-1234", "james@gmail.com", 0, 0, False),
-                    Caregiver("Benjamin Martinez", "678-901-2345", "benjamin@gmail.com", 0, 0, False),
-                    Caregiver("Aiden Martins", "789-012-3456", "aiden@gmail.com", 0, 0, False),
-                    Caregiver("Emma Smith", "890-123-4567", "emma.smith@gmail.com", 0, 0, False),
+                    Caregiver("Emily Martins", "123-456-7890", "emily@gmail.com", True),
+                    Caregiver("Emma Martinez", "234-567-8901", "emma@gmail.com", True),
+                    Caregiver("Abigail Garcia", "345-678-9012", "abigail@gmail.com", True),
+                    Caregiver("Isabella Lopez", "456-789-0123", "isabella@gmail.com", True),
+                    Caregiver("James Rodriguez", "567-890-1234", "james@gmail.com", False),
+                    Caregiver("Benjamin Martinez", "678-901-2345", "benjamin@gmail.com", False),
+                    Caregiver("Aiden Martins", "789-012-3456", "aiden@gmail.com", False),
+                    Caregiver("Emma Smith", "890-123-4567", "emma.smith@gmail.com", False),
                     ]
     
     while True:
@@ -194,7 +200,7 @@ if __name__ == "__main__":
             print("Welcome to the Care Availability Scheduler")
             program = 0
             while program != 1:
-                user_options = input("What do you want to do? Press 1 to update or create a schedule. Press 2 to get your hours. Press 3 to get your pay rate. Press 4 to calculate weekly pay. Press any other to exit")
+                user_options = input("What do you want to do? Press 1 to update or create a schedule. Press 2 to get your hours. Press 3 to get your pay rate. Press 4 to calculate weekly pay. Press 5 to calculate monthly pay. Press any other to exit. ")
                 if user_options == "1":
                     # Get user input for the year and month
                     year = int(input("Enter the year: "))
@@ -212,8 +218,11 @@ if __name__ == "__main__":
                      print(f"You are making ${user.pay_rate} an hour.")
                         
                 elif user_options == "4":
-                    week = input("What week do you want to calculate? ")
+                    week = int(input("What week do you want to calculate? "))
                     print(f"You are making ${user.get_weekly_pay(week)} on week {week}")
+                
+                elif user_options == "5":
+                    print(f"You are making ${user.get_monthly_pay()} this month.")
                 else:
                     program = 1
                     
@@ -225,6 +234,6 @@ if __name__ == "__main__":
         if option == "yes":
             continue
         else:
+            print("Goodbye!")
             break
             
-    
