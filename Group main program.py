@@ -129,7 +129,7 @@ class CaregiverSchedule:
 
         print(f"HTML care schedule for {calendar.month_name[self.month]} {self.year} generated successfully!")
         
- Nina
+# Nina
 def generate_pay_report(caregivers, year, month):
     """Generate a pay report for the caregivers."""
     total_hours = 0
@@ -180,16 +180,16 @@ if __name__ == "__main__":
 
         if caregiver:
             print(f"Welcome to the Care Availability Scheduler, {caregiver.name}")
- main
+ #main
         
             # Get user input for the year and month
             year = int(input("Enter the year: "))
             month = int(input("Enter the month (1-12): "))
- Nina
+ #Nina
             schedule = CaregiverSchedule(caregiver, year, month)
 
             schedule = CaregiverSchedule(user, year, month)
- main
+ #main
             schedule.generate_month_schedule()
             schedule.update_schedule()
             schedule.display_care_schedule_as_html()
