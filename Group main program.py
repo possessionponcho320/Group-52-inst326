@@ -1,3 +1,4 @@
+# Solution - enter your code solution below
 import calendar
 
 # Availability options
@@ -176,6 +177,70 @@ class CaregiverSchedule:
 
         print(f"HTML care schedule for {calendar.month_name[self.month]} {self.year} generated successfully!")
         
+        
+def generate_pay_report(caregivers, year, month):
+    # Create the HTML structure
+    html_report = f"""
+    <html>
+    <head>
+        <title>Pay Report for {calendar.month_name[month]} {year}</title>
+        <style>
+            table {{
+                border-collapse: collapse;
+                width: 100%;
+            }}
+            th, td {{
+                border: 1px solid black;
+                padding: 10px;
+                text-align: center;
+            }}
+        </style>
+    </head>
+    <body>
+        <h1>Caregiver Pay Report for {calendar.month_name[month]} {year}</h1>
+        <table>
+            <tr>
+                <th>Caregiver</th>
+                <th>Monthly Pay</th>
+                <th>Weekly Pay (Week 1)</th>
+                <th>Weekly Pay (Week 2)</th>
+                <th>Weekly Pay (Week 3)</th>
+                <th>Weekly Pay (Week 4)</th>
+                <th>Weekly Pay (Week 5)</th>
+            </tr>
+    """
+    
+    # Add pay details for each caregiver
+    for caregiver in caregivers:
+        monthly_pay = caregiver.get_monthly_pay()
+        weekly_pays = caregiver.weekly_hours + [0] * (5 - len(caregiver.weekly_hours))  # Pad weeks to always display 5
+        html_report += f"""
+            <tr>
+                <td>{caregiver.name}</td>
+                <td>${monthly_pay:.2f}</td>
+                <td>${weekly_pays[0] * caregiver.get_pay_rate():.2f}</td>
+                <td>${weekly_pays[1] * caregiver.get_pay_rate():.2f}</td>
+                <td>${weekly_pays[2] * caregiver.get_pay_rate():.2f}</td>
+                <td>${weekly_pays[3] * caregiver.get_pay_rate():.2f}</td>
+                <td>${weekly_pays[4] * caregiver.get_pay_rate():.2f}</td>
+            </tr>
+        """
+    
+    # Close the table and HTML
+    html_report += """
+        </table>
+    </body>
+    </html>
+    """
+    
+    # Write the HTML content to a file
+    with open(f"caregiver_pay_report_{year}_{month}.html", "w") as file:
+        file.write(html_report)
+
+    print(f"Pay report for {calendar.month_name[month]} {year} generated successfully!")
+
+
+        
 if __name__ == "__main__":
     
     caregivers = [
@@ -202,7 +267,7 @@ if __name__ == "__main__":
             print("Welcome to the Care Availability Scheduler")
             program = 0
             while program != 1:
-                user_options = input("What do you want to do? Press 1 to update or create a schedule. Press 2 to get your hours. Press 3 to get your pay rate. Press 4 to calculate weekly pay. Press 5 to calculate monthly pay. Press any other to exit. ")
+                user_options = input("What do you want to do? Press 1 to update or create a schedule. Press 2 to get your hours. Press 3 to get your pay rate. Press 4 to calculate weekly pay. Press 5 to calculate monthly pay. Press 6 to generate pay report for all caregivers. Press any other to exit. Press any other to exit. ")
                 if user_options == "1":
                     # Get user input for the year and month
                     year = int(input("Enter the year: "))
@@ -225,8 +290,16 @@ if __name__ == "__main__":
                 
                 elif user_options == "5":
                     print(f"You are making ${user.get_monthly_pay()} this month.")
+                
+                elif user_options == "6":
+                    year = int(input("Enter the year: "))
+                    month = int(input("Enter the month (1-12): "))
+                    generate_pay_report(caregivers, year, month)
                 else:
                     program = 1
+
+                
+                
                     
                 
         else:
@@ -240,3 +313,4 @@ if __name__ == "__main__":
             break
             
     
+
