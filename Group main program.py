@@ -4,18 +4,18 @@ import calendar
 AVAILABILITY_OPTIONS = ["preferred", "available", "unavailable"]
 
 class Caregiver:
-    def __init__(self, name, phone, email, pay_rate=20.00, hours_per_week=40):
-        self.name = name
+    def __init__(self, name, phone, email, pay_rate):
+        self._name = name
         self.phone = phone
         self.email = email
         self.pay_rate = pay_rate
-        self.hours_per_week = hours_per_week
+        self.hours = 0
 
     def __str__(self):
-        return f"{self.name} ({self.phone}, {self.email})"
+        return f"{self._name} ({self.phone}, {self.email})"
     
     def get_name(self):
-        return self.name
+        return self._name
 
 class CaregiverSchedule:
     def __init__(self, name, year, month):
@@ -106,23 +106,24 @@ class CaregiverSchedule:
             file.write(html_schedule)
         print(f"HTML care schedule for {calendar.month_name[self.month]} {self.year} generated successfully!")
 
-    def generate_pay_report_as_html(self, pay_rate):
+    def generate_pay_report_as_html(self, caregiver):
         """Generate and save a pay report as an HTML file."""
-        total_hours = 0
-        daily_hours = 6  # 6 hours per shift
+        shift_hours = 6  # 6 hours per shift
+        caregiver.hours = 0
         for shifts in self.schedule.values():
             for shift in shifts.values():
                 if shift in ["preferred", "available"]:
-                    total_hours += daily_hours
+                    caregiver.hours += shift_hours
 
-        weekly_hours = total_hours / 4  # Assuming 4 weeks in a month
-        weekly_pay = weekly_hours * pay_rate
-        monthly_pay = total_hours * pay_rate
+
+        weekly_hours = caregiver.hours / 4  # Assuming 4 weeks in a month and is working next month
+        weekly_pay = weekly_hours * caregiver.pay_rate
+        monthly_pay = caregiver.hours * caregiver.pay_rate
 
         html_report = f"""
         <html>
         <head>
-            <title>Pay Report for {self.name}</title>
+            <title>Pay Report for {caregiver.get_name()}</title>
             <style>
                 table {{
                     border-collapse: collapse;
@@ -137,56 +138,81 @@ class CaregiverSchedule:
             </style>
         </head>
         <body>
-            <h1 style="text-align: center;">Pay Report for {self.name}</h1>
+            <h1 style="text-align: center;">Pay Report for {caregiver.get_name()}</h1>
             <table>
                 <tr>
-                    <th>Weekly Hours</th>
-                    <th>Weekly Pay</th>
-                    <th>Monthly Hours</th>
-                    <th>Monthly Pay</th>
+                    <th>Name</th>
+                    <td>{caregiver.get_name()}</td>
                 </tr>
                 <tr>
+                    <th>Phone</th>
+                    <td>{caregiver.phone}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{caregiver.email}</td>
+                </tr>
+                <tr>
+                    <th>Pay Rate</th>
+                    <td>${caregiver.pay_rate:.2f}/hour</td>
+                </tr>
+                <tr>
+                    <th>Monthly Hours</th>
+                    <td>{caregiver.hours:.2f}</td>
+                </tr>
+                <tr>
+                    <th>Weekly Hours</th>
                     <td>{weekly_hours:.2f}</td>
-                    <td>${weekly_pay:.2f}</td>
-                    <td>{total_hours:.2f}</td>
+                </tr>
+            <tr>
+                <th>Weekly Pay</th>
+                <td>${weekly_pay:.2f}</td>
+            </tr>
+                <tr>
+                    <th>Monthly Pay</th>
                     <td>${monthly_pay:.2f}</td>
+                </tr>
+                <tr>
+                    <th>Total Hours</th>
+                    <td>{caregiver.hours:.2f}</td>
                 </tr>
             </table>
         </body>
         </html>
         """
-        with open(f"pay_report_{self.year}_{self.month}_{self.name}.html", "w") as file:
+        with open(f"pay_report_{self.year}_{self.month}_{caregiver.get_name()}.html", "w") as file:
             file.write(html_report)
-        print(f"Pay report for {self.name} generated successfully!")
+        print(f"Pay report for {caregiver.get_name()} generated successfully!")
         
         
 if __name__ == "__main__":
     caregivers = [
-        Caregiver("Logan Kim", "353-383-2849", "logank@gmail.com"),
-        Caregiver("Samantha Green", "353-792-7943", "samag@gmail.com"),
-        Caregiver("Tony Martin", "373-804-1264", "tonymar@gmail.com"),
-        Caregiver("Tim Stephens", "373-294-02953", "timstp@gmail.com"),
-        Caregiver("Jenny Dawnson", "364-305-1068", "jennydawnson@gmail.com"),
-        Caregiver("Peter Zhang", "353-805-1852", "pdzhng@gmail.com"),
-        Caregiver("David Lee", "364-703-2692", "ddgsan@gmail.com"),
-        Caregiver("Jerrica Lopez", "284-903-9233", "jrricalpz@gmail.com")
+        Caregiver("Logan Kim", "353-383-2849", "logank@gmail.com", 20),
+        Caregiver("Samantha Green", "353-792-7943", "samag@gmail.com", 20),
+        Caregiver("Tony Martin", "373-804-1264", "tonymar@gmail.com", 20),
+        Caregiver("Tim Stephens", "373-294-02953", "timstp@gmail.com", 20),
+        Caregiver("Jenny Dawnson", "364-305-1068", "jennydawnson@gmail.com", 0),
+        Caregiver("Peter Zhang", "353-805-1852", "pdzhng@gmail.com", 0),
+        Caregiver("David Lee", "364-703-2692", "ddgsan@gmail.com", 0),
+        Caregiver("Jerrica Lopez", "284-903-9233", "jrricalpz@gmail.com", 0)
     ]
 
     while True:
-        user_name = input("What is Your Name: ").strip()
-        caregiver = next((c for c in caregivers if c.get_name() == user_name), None)
+        user_name = input("What is Your Name: ").strip().lower()
+        caregiver = next((c for c in caregivers if c.get_name().strip().lower() == user_name), None)
         if caregiver:
-            print(f"Welcome to the Care Availability Scheduler, {caregiver.name}")
+            print(f"Welcome to the Care Availability Scheduler, {caregiver.get_name()}")
             year = int(input("Enter the year: "))
             month = int(input("Enter the month (1-12): "))
-            schedule = CaregiverSchedule(caregiver.name, year, month)
+            schedule = CaregiverSchedule(caregiver.get_name(), year, month)
             schedule.generate_month_schedule()
             schedule.update_schedule()
             schedule.display_care_schedule_as_html()
-            schedule.generate_pay_report_as_html(caregiver.pay_rate)
+            schedule.generate_pay_report_as_html(caregiver)
         else:
             print("You are not a member of the care team!")
         
         option = input("Do you want to reschedule or add another user (yes/no): ").strip().lower()
         if option != "yes":
+            print("Goodbye!")
             break
