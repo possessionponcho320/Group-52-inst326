@@ -39,11 +39,11 @@ class CaregiverSchedule:
         for day in range(1, 8):
             print(f"\nAvailability for {day_names[day - 1]}")
             
-            morning_shift = input("Morning shift (7:00AM - 1:00PM): Enter 'preferred', 'available', or 'unavailable': ").strip().lower()
+            morning_shift = input("Morning shift (7:00AM - 1:00PM): Enter 'preferred', 'available' (default), or 'unavailable': ").strip().lower()
             if morning_shift in AVAILABILITY_OPTIONS:
                 self.schedule[day]["7:00AM - 1:00PM"] = morning_shift
             
-            afternoon_shift = input("Afternoon shift (1:00PM - 7:00PM): Enter 'preferred', 'available', or 'unavailable': ").strip().lower()
+            afternoon_shift = input("Afternoon shift (1:00PM - 7:00PM): Enter 'preferred', 'available' (default), or 'unavailable': ").strip().lower()
             if afternoon_shift in AVAILABILITY_OPTIONS:
                 self.schedule[day]["1:00PM - 7:00PM"] = afternoon_shift
 
